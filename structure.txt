@@ -1,0 +1,53 @@
+frontend
+|-node_modules
+|-public
+| |-images
+|-src 
+| |-api
+| | |-axios.js
+| |-app
+| | |-features
+| | | |-authSlice.js
+| | | |-chatSlice.js
+| | | |-llmSlice.js
+| | | |-userSlice.js
+| | |-store.js
+| |-assests
+| |-components
+| | |-auth
+| | | |-Login.jsx
+| | | |-PrivateRoute.jsx
+| | | |-Register.jsx
+| | |-chat
+| | |-layout
+| | | |-DashboardLayout.jsx
+| | | |-Navbar.jsx
+| | | |-Navbardash.jsx
+| | | |-PageLayout.jsx
+| | |-ui
+| | | |-animations
+| | | | |-LoadingAnimation.jsx
+| | | |-RenderChatList.jsx
+| | | |-SideBar.jsx
+| | | |-UserButton.jsx
+| |-pages
+| | |-AuthPage.jsx
+| | |-Chat.jsx
+| | |-Dashboard.jsx
+| | |-LandingPage.jsx
+| | |-NotFound.jsx
+| |-utils
+| | |-TokenValidation.jsx
+| |-App.css
+| |-App.jsx
+| |-index.css
+| |-main.jsx
+|-.env
+|-.gitignore
+|-package-lock.json
+|-package.json
+|-postcss.config.js 
+|-README.md 
+|-tailwind.config.js 
+|-vite.config.js 
+|-vite.config.js

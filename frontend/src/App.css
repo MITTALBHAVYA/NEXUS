@@ -1,0 +1,363 @@
+.centered-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.centered-container>h1 {
+    margin-top: 0px;
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: white;
+    width: 30rem;
+    font-family: 'Inter';
+}
+
+.centered-container>p {
+    margin-top: 5px;
+    font-family: 'Quicksand';
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #FFFFFF;
+    margin-bottom: 10%;
+    font-size: 16px;
+}
+
+.signin-ggl-btn {
+    overflow: hidden;
+    white-space: wrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30rem;
+    height: 3em;
+    border-radius: 8px;
+    font-size: 20px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    color: #000000;
+    border: 0.1em solid #FFFFFF;
+    background: #d9d9d9;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.signin-ggl-btn:hover {
+    background-color: #252e3d;
+    color: #f5deb3;
+    border-color: #252e3d67;
+}
+
+.signin-ggl-btn>img {
+    height: 2.1em;
+    width: 2.1em;
+    margin-right: 0.5em;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.signin-ggl-btn>span {
+    font-size: 1em;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    margin-left: 1.5em;
+    text-transform: uppercase;
+}
+
+.or {
+    font-family: 'Quicksand';
+    font-weight: bold;
+    color: #FFFFFF;
+    font-size: 30px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.centered-container>form {
+    display: flex;
+    flex-direction: column;
+    width: 30rem;
+}
+
+.centered-container>form>div {
+    margin-bottom: 1rem;
+}
+
+.centered-container>form>div>input {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30rem;
+    height: 3em;
+    border-radius: 8px;
+    font-size: 20px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    color: #000000;
+    border: 0.1em solid #FFFFFF;
+    background: #d9d9d9;
+}
+
+.centered-container>form>div>input::placeholder {
+    text-align: center;
+    color: #000000;
+    font-size: 20px;
+}
+
+.centered-container>form>div>button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30rem;
+    height: 3em;
+    border-radius: 8px; 
+    font-size: 20px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    color: #FFFFFF;
+    border: 0.1em solid #f15626;
+    background: #ad2701;
+    transition: background-color 0.3s ease, color 0.3s ease; 
+  }
+  
+  .centered-container>form>div>button:hover {
+    background-color: #f15626; 
+    color: wheat;
+    border-color: #f15626;
+    text-shadow: #d9d9d9; 
+  }
+  
+  .centered-container>form>div>button>span {
+    font-size: 1em;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    text-shadow: 1px 1px 2px rgba(236, 228, 228, 0.3); 
+    margin-left: 1.5em;
+    text-transform: uppercase; 
+  }
+
+  .centered-container>div a {
+    font-family: 'Quicksand', sans-serif;
+    color: white;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-decoration: none;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+  }
+  
+  .centered-container>div a:hover,
+  .centered-container>div a:focus {
+    color: #f3ef13;
+    text-shadow: 0 2px 8px rgba(224, 173, 31, 0.5); 
+    outline: none; 
+  }
+  
+  .centered-container>div a:active {
+    color: #db6708; 
+  }
+  
+  .nexuslogo {
+    color: #FFFFFF;
+    font-size: 2em;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-top: 0.5vw;
+    text-decoration: none;
+    font-family: 'Quicksand';
+    letter-spacing: 0.1em;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+
+.nexuslogolink:hover{
+    color: #FFFFFF;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+}
+
+.nexuslogolink > img:hover {
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
+}
+
+
+.signuplink {
+    font-family: 'Quicksand', sans-serif;
+    color: black;
+    font-weight: bold;
+    letter-spacing: 0.6px;
+    text-decoration: none;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.signuplink:hover {
+    color: #FFFFFF;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+}
+
+.profile-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%; 
+    height: 3.5rem;
+    width: 3.5rem;
+    font-size: 2.5rem;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    border: 0.1em solid #5c105e;
+    background: #4A154B;
+    transition: background-color 0.3s ease, color 0.3s ease; 
+  }
+  
+  .profile-link:hover {
+    background-color: #812a8b; 
+    color: white;
+    border-color: #812a8b;
+    text-shadow: #d9d9d9; 
+  }
+  
+  .profile-link>span {
+    font-family: 'Quicksand', sans-serif;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+  }
+
+  .WhiteText,
+.YelloText {
+  font-family: 'Inter', sans-serif;
+  font-weight: bold;
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+.connect {
+  font-family: 'Quicksand', sans-serif;
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3);
+  font-weight: bold;
+  letter-spacing: 0.06em;
+}
+
+.email_signup_btn,
+.ggl_signup_btn {
+  transition: all 0.3s ease;
+}
+
+.email_signup_btn:hover,
+.ggl_signup_btn:hover {
+  transform: scale(1.05);
+}
+
+.center-text{
+  font-family: 'Quicksand', sans-serif;
+  font-weight: bold;
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.07rem;
+}
+
+.workspacebtn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30rem;
+    height: 3em;
+    border-radius: 8px; 
+    font-size: 20px;
+    box-sizing: border-box;
+    margin-bottom: -22px;
+    color: #FFFFFF;
+    border: 0.1em solid #5c105e;
+    background: #4A154B;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.workspacebtn:hover{
+    background-color: #812a8b; 
+    color: white;
+    border-color: #812a8b;
+    text-shadow: #d9d9d9; 
+}
+
+.workspacebtn>span{
+    font-size: 1em;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    text-shadow: 1px 1px 2px rgba(236, 228, 228, 0.3); 
+    margin-left: 1.5em;
+    text-transform: uppercase;
+}
+
+.workspacebot{
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+}
+
+.opnwksp{
+    font-family: 'Quicksand';
+    font-style: normal;
+    letter-spacing: 0.04em;
+    color: #FFFFFF;
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.createworkspace{
+    width: 100%;
+    background-color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.malikemail{
+    padding-left: 10px;
+}
+
+.malikemail>p{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+/* Hide scrollbar in all browsers */
+.no-scrollbar {
+    overflow: hidden; /* For standard scrolling behavior */
+  }
+  
+  /* For WebKit browsers (Chrome, Safari, Opera) */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none; /* Hides scrollbar */
+  }
+  
+  /* For Firefox */
+  .no-scrollbar {
+    scrollbar-width: none; /* Hides scrollbar */
+  }
+  
+  /* For Internet Explorer/Edge */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* Hides scrollbar */
+  }
+  
+  .workspacelist{
+    justify-content: space-between;
+  }
+  .workspacelist>div{
+    border-radius: 2px;
+  }
+
+  .workspacelist>div>span{
+    font-family: 'Quicksand';
+    font-size: 3rem;
+    font-weight: bold;
+  }
+
+  .workspacelist>span{
+    font-family: 'Quicksand';
+    font-size: 2rem;
+  }

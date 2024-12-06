@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile  # Replace with your actual Dockerfile name if different
+    ports:
+      - "8000:8000"  # Map FastAPI port to host
+    environment:
+      - SQLALCHEMY_DATABASE_URI=${SQLALCHEMY_DATABASE_URI}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - JWT_ALGORITHM=${JWT_ALGORITHM}
+      - JWT_ACCESS_TOKEN_EXPIRE_MINUTES=${JWT_ACCESS_TOKEN_EXPIRE_MINUTES}
+      - JWT_REFRESH_TOKEN_EXPIRE_MINUTES=${JWT_REFRESH_TOKEN_EXPIRE_MINUTES}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - DEFAULT_LLM_MODEL=${DEFAULT_LLM_MODEL}
+      - DEFAULT_OPENAI_EMBEDDING_MODEL=${DEFAULT_OPENAI_EMBEDDING_MODEL}
+      - CHROMA_DB_PATH=${CHROMA_DB_PATH}
+      - REDIS_STORE_URL=${REDIS_STORE_URL}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_BUCKET_NAME=${AWS_BUCKET_NAME}
+      - AWS_REGION_NAME=${AWS_REGION_NAME}
+      - POSTGRES_DB:${POSTGRES_DB}
+      - POSTGRES_USER:${POSTGRES_USER}
+      - POSTGRES_PASSWORD:${POSTGRES_PASSWORD}
+      - POSTGRES_HOSTNAME=db
+    depends_on:
+      - db
+      - redis
+
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB:${POSTGRES_DB}
+      - POSTGRES_USER:${POSTGRES_USER}
+      - POSTGRES_PASSWORD:${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"  # Map PostgreSQL port to host
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"  # Map Redis port to host
+
