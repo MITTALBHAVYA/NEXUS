@@ -82,8 +82,9 @@ const Dashboard = () => {
     dispatch(postQuery({ token, requiredData: raw }))
       .unwrap()
       .then((data) => {
-        if (data?.data?.chat_uuid) {
-          navigate(`/c/${data.data.chat_uuid}?token=${token}`);
+        if (data?.chat_uuid) {
+          console.log("navigate called");
+          navigate(`/c/${data.chat_uuid}?token=${token}`);
         }
       })
       .catch((error) => {

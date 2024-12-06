@@ -54,7 +54,7 @@ const Login = () => {
   return (
     <PageLayout>
       <Navbar variant="signin" />
-      <div className="relative flex flex-row items-center justify-center mt-[4rem]">
+      <div className="relative flex flex-row items-center justify-center">
         <div className="centered-container relative bg-gradient-to-br from-[#d63f0a] via-[#334155] to-[#aeaeae] w-[32rem] rounded-none md:w-[45rem] md:rounded-[10rem] p-8">
           <h1 className="text-white text-3xl sm:text-4xl font-bold mb-4">
             Welcome Back to Nexus

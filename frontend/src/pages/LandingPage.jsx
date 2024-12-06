@@ -16,8 +16,8 @@ const LandingPage = () => {
   return (
     <PageLayout>
       <Navbar variant="landing" />
-      <div className="relative flex flex-row items-center justify-center mt-[4rem]">
-      <div className="relative bg-gradient-to-br from-[#d63f0a] via-[#334155] to-[#aeaeae] flex flex-col items-center text-center px-4 py-10 lg:px-20 rounded-full">
+      <div className="relative flex flex-row items-center justify-center">
+      <div className="relative bg-gradient-to-br from-[#d63f0a] via-[#334155] to-[#aeaeae] flex flex-col items-center text-center px-4 py-10 lg:px-20 md:rounded-full">
         <div className="content max-w-[700px] mb-12 animate-fadeIn">
           <h1 className="text-white text-4xl sm:text-5xl font-bold mb-4">
             Built for Collaboration.

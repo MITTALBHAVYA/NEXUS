@@ -1,0 +1,133 @@
+{
+    "auth": {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiNGMxZTJhYjAtYmIwMi00NzdmLWJiZGMtZGM4ODgwNWQ2NmUxIiwiZW1haWwiOiJiaGF2eWExMm1pdHRhbEBnbWFpbC5jb20iLCJuYW1lIjoiQmhhdnlhIE1pdHRhbCIsImV4cCI6MTczMzgxNzAzNX0.4I_3NSZlA3KM5W258IhfjKdzual_N6lqZFAsph23FA8",
+        "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiNGMxZTJhYjAtYmIwMi00NzdmLWJiZGMtZGM4ODgwNWQ2NmUxIiwiZXhwIjoxNDY5MzUxNzAzNX0.cACRwfRi29yWKQgHXDoq6OUw3xnJit-pyRZKo3O9g7o",
+        "isLoading": false,
+        "error": null,
+        "user": {
+            "id": "ce9b3b0b-fd05-4b2a-b8f9-5c408a2918bd",
+            "username": "bhavya",
+            "email": "bhavya12mittal@gmail.com"
+        }
+    },
+    "user": {
+        "uuid": "4c1e2ab0-bb02-477f-bbdc-dc88805d66e1",
+        "name": "Bhavya Mittal",
+        "email": "bhavya12mittal@gmail.com",
+        "isLoading": false,
+        "error": null
+    },
+    "chat": {
+        "customer_uuid": "4c1e2ab0-bb02-477f-bbdc-dc88805d66e1",
+        "allhistory": {
+            "db": null,
+            "doc": null,
+            "chat": [
+                {
+                    "uuid": "20bbbb73-3415-46db-866d-3d21ad46e2ba",
+                    "title": "hello",
+                    "query_type": "chat",
+                    "created_at": "2024-12-06T20:49:53.353408"
+                },
+                {
+                    "uuid": "4a63bf23-90ec-45a5-968f-9874631b2edc",
+                    "title": "hello",
+                    "query_type": "chat",
+                    "created_at": "2024-12-06T20:46:19.671217"
+                },
+                {
+                    "uuid": "cc67af04-e7f5-4fa1-b7bd-709b68959999",
+                    "title": "hii",
+                    "query_type": "chat",
+                    "created_at": "2024-12-06T20:31:14.551202"
+                }
+            ]
+        },
+        "chatHistory": {
+            "chat_uuid": "855a2d0b-7ab6-4985-a3fa-3693c12a19b8",
+            "history": {
+                "title": "testing",
+                "query_type": "chat",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": "testing",
+                        "extra": {}
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "\n<div>\n    <p>Could you please provide more details or clarify your request so I can assist you better?</p>\n</div>\n",
+                        "extra": {}
+                    }
+                ]
+            }
+        },
+        "isLoading": false,
+        "error": null
+    },
+    "llm": {
+        "llmModels": [
+            "gpt-4o",
+            "gpt-4-turbo",
+            "gpt-3.5-turbo-0125",
+            "gemini-1.5-pro"
+        ],
+        "isLoading": false,
+        "error": null
+    },
+    "suggestion": {
+        "suggestions": [
+            "What specific information are you looking for?",
+            "Can you provide an example of what you need?",
+            "Is there a particular dataset or topic you are interested in?",
+            "Do you have any specific questions about data analysis or database management?"
+        ],
+        "isLoading": false,
+        "error": null
+    },
+    "query": {
+        "divResponse": "\n<div>\n    <p>Could you please provide more details or clarify your request so I can assist you better?</p>\n</div>\n",
+        "sqlQuery": null,
+        "isLoading": false,
+        "error": null,
+        "chart_uuid": null
+    },
+    "db": {
+        "db_configs": [],
+        "db_config_id": null,
+        "chat_uuid": null,
+        "customer_uuid": null,
+        "testStatus": null,
+        "isLoading": false,
+        "error": null
+    },
+    "datafile": {
+        "document_id": 0,
+        "document_name": null,
+        "document_type": null,
+        "chat_uuid": null,
+        "isLoading": false,
+        "created_at": null,
+        "error": null
+    },
+    "datasource": {
+        "db_configs": [],
+        "user_docs": [],
+        "isLoading": false,
+        "error": null
+    },
+    "chart": {
+        "history": {
+            "messages": [],
+            "query_type": "",
+            "title": ""
+        },
+        "chartData": null,
+        "isLoading": false,
+        "error": null
+    },
+    "_persist": {
+        "version": -1,
+        "rehydrated": true
+    }
+}

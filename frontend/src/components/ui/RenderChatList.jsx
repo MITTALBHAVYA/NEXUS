@@ -31,7 +31,7 @@ const RenderChatList = ({ type }) => {
         break;
       case "document":
         chats = allhistory.doc || [];
-        type = chats[0].query_type;
+        type = chats.length>0?chats[0]:"document";
         break;
       case "database":
         chats = allhistory.db || [];

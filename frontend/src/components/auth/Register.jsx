@@ -50,8 +50,8 @@ const Register = () => {
   return (
     <PageLayout>
       <Navbar variant="simple" />
-      <div className="relative flex flex-row items-center justify-center mt-[4rem]">
-        <div className="centered-container relative bg-gradient-to-br from-[#d63f0a] via-[#334155] to-[#aeaeae] w-[32rem] rounded-none md:w-[45rem] md:rounded-[10rem] p-8">
+      <div className="relative flex flex-row items-center justify-center">
+        <div className="centered-container relative bg-gradient-to-br from-[#d63f0a] via-[#334155] to-[#aeaeae] h-[40rem] w-[32rem] rounded-none md:w-[45rem] md:rounded-[10rem] p-8">
           <h1>SIGN UP</h1>
           <p>We suggest using the email address that you use at work</p>
           <form onSubmit={handleSubmit}>
