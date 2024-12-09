@@ -1,4 +1,4 @@
-# KareAI: Analytics Agent
+# NEXUS AI : Analytics Agent
 
 ## Setup
 

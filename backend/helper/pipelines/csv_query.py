@@ -29,13 +29,8 @@ from llama_index.core.query_pipeline import CustomQueryComponent
 
 class PandasResponseWithChatHistory(CustomQueryComponent):
     llm: Any = Field(..., description="LLM")
-    system_prompt: Optional[str] = Field(
-        default=None, description="System prompt to use for the LLM"
-    )
-    context_prompt: Optional[str] = Field(
-        description="Context prompt to use for the LLM",
-    )
-
+    system_prompt: Optional[str] = ""
+    context_prompt: Optional[str] = ""
     def _validate_component_inputs(self, input: Dict[str, Any]) -> Dict[str, Any]:
         """Validate component inputs during run_component."""
         # NOTE: this is OPTIONAL but we show you where to do validation as an example

@@ -78,7 +78,7 @@ async def upload_csv(
     logger.debug(f"Request: {file.filename}")
 
     # Check the file mime type
-    if file.content_type != "text/csv":
+    if file.content_type not in ["text/csv", "application/vnd-ms-excel"]:
         logger.error("Invalid file type")
         response.status_code = status.HTTP_400_BAD_REQUEST
         return APIResponseBase.bad_request(message="Invalid file type")
