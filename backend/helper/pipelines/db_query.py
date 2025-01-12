@@ -24,12 +24,8 @@ from llama_index.llms.openai import OpenAI
 
 class SQLResponseWithChatHistory(CustomQueryComponent):
     llm: Any = Field(..., description="LLM")
-    system_prompt: Optional[str] = Field(
-        default=None, description="System prompt to use for the LLM"
-    )
-    context_prompt: str = Field(
-        description="Context prompt to use for the LLM",
-    )
+    system_prompt: Optional[str] = ""
+    context_prompt: str = ""
 
     def _validate_component_inputs(self, input: Dict[str, Any]) -> Dict[str, Any]:
         """Validate component inputs during run_component."""

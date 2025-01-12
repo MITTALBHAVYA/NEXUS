@@ -91,7 +91,7 @@ class ChatHistoryQuery:
             }
         )
         chat_memory_buffer = ChatMemoryBuffer.from_defaults(
-            chat_store=chat_store, chat_store_key=chat_uuid, token_limit=5000
+            chat_store=chat_store, chat_store_key=chat_uuid, token_limit=15000
         )
         chat_messages = chat_memory_buffer.get()
         # list of messages with role and content
@@ -99,7 +99,7 @@ class ChatHistoryQuery:
             {
                 "role": chat_message.role,
                 "content": post_processed_html_response(chat_message.content),
-                "extra": chat_message.additional_kwargs or {},
+                "extras": chat_message.additional_kwargs or {},
             }
             for chat_message in chat_messages
         ]

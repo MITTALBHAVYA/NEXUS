@@ -1,4 +1,4 @@
-# KareAI: Analytics Agent
+# NEXUS AI : Analytics Agent
 
 ## Setup
 
@@ -51,5 +51,12 @@
    ```
 
 #### Note:
-- make sure to setup a postgres database and set the database url in the .env file
-- Swagger docs can be found at `http://localhost:8000/docs`
+- Make sure to set up a PostgreSQL database and configure the database URL in the `.env` file.
+- Swagger docs can be found at `http://localhost:8000/docs`.
+
+---
+
+## Contributions
+
+### Backend Development
+- **Ashish Kushwala** ([GitHub: AshishKingdom](https://github.com/AshishKingdom))

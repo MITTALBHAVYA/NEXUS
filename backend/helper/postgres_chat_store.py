@@ -113,7 +113,7 @@ class PostgreSQLChatStore(BaseChatStore):
         )
         rows = self.cursor.fetchall()
         messages = rows[0][0] if rows else []
-        return [ChatMessage.parse_obj(message) for message in messages]
+        return [self.__dict_to_chat_message(message) for message in messages]
 
     def add_message(
         self, key: str, message: ChatMessage, idx: Optional[int] = None
@@ -218,6 +218,19 @@ class PostgreSQLChatStore(BaseChatStore):
             "extras": chat_message.additional_kwargs or {},
         }
 
+    def __dict_to_chat_message(self, message_dict: dict) -> ChatMessage:
+        """
+        Converts a dictionary to a ChatMessage object.
+        Args:
+            message_dict: The dictionary to be converted.
+        Returns:
+            A ChatMessage object representing the dictionary.
+        """
+        return ChatMessage(
+            role=message_dict["role"],
+            content=message_dict["content"],
+            additional_kwargs=message_dict.get("extras"),
+        )
 
 # Example usage
 # db_config = {
