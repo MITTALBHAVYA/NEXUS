@@ -379,7 +379,7 @@ def chart_query_pipeline(
     chat_memory.put(ChatMessage(role="user", content=query_str))
     response_message = ChatMessage(
         role="assistant",
-        content=result.message.content,
+        content=caption_info["caption"],
         additional_kwargs={
             "chart_uuid": str(chart.uuid),
             "chart_type": chart.chart_type,

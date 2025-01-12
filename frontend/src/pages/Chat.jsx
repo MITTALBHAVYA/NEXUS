@@ -1,7 +1,7 @@
 // import DashboardLayout from "../components/layout/DashboardLayout";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, } from "../components/chat/ChatComponents.jsx";
 import { motion } from "framer-motion";
 import LoadingAnimation from "../components/ui/animations/LoadingAnimation.jsx";
+import ZeroChatSuggestionBox from "../components/chat/ZeroChatSuggestionBox.jsx";
 import UploadFileDialog from "../components/ui/UploadFileDialog.jsx";
 import DBSelectDialog from "../components/ui/DBSelectDialog.jsx";
 import AddDBConfig from "../components/ui/AddDBConfig.jsx";
@@ -23,6 +23,9 @@ import { getChart } from "../app/services/chartSlice.js";
 import { getSuggestions } from "../app/services/suggestionSlice.js";
 import { getChatHistory } from "../app/services/chatSlice.js";
 import { postQueryv1, postQuery, postQueryv2 } from "../app/services/querySlice.js";
+import { UserCard } from "../components/chat/ChatComponents.jsx";
+import NIcon from "../components/ui/animations/NIcon.jsx";
+import BuildChartData from "../utils/BuildChartData.js";
 
 const Chat = () => {
   const params = useParams();
@@ -48,8 +51,8 @@ const Chat = () => {
   hljs.registerLanguage("javascript", javascript);
   hljs.registerLanguage("markdown", markdown);
 
-  console.log("page loding chats here : ",chats);
-  
+  console.log("page loding chats here : ", chats);
+
   const toggleUploadDialog = () => {
     setShowUploadDialog(!showUploadDialog);
   };
@@ -86,18 +89,18 @@ const Chat = () => {
       const chat = await dispatch(getChart({ token, chart_uuid })).unwrap();
       console.log("here the data i am getting from the chart getching ", chat);
       if (chat) {
-        console.log("need the breakdown : 1 ",chat.caption,"2 ",chat.data,"3 ",chat.chart_type)
-        const formattedChats = 
-          {
-            role: "assistant",
-            content: chat.caption || "", 
-            isChartPresent: !!chat.data,
-            chartData: chat.data || [],
-            chartUuid: chat.chart_uuid || "", 
-            chartType: chat.chart_type || "", 
-          };
-        console.log("formattedChats : ", formattedChats);
-        setChats((prevChats) => [...prevChats, formattedChats]);
+        console.log("need the breakdown : 1.caption ", chat.caption, "2.data ", chat.data, "3.chart_type ", chat.chart_type);
+        const formattedChat =
+        {
+          role: "assistant",
+          content: chat.caption || "",
+          isChartPresent: !!chat.data,
+          chartData: chat.data || [],
+          chartUuid: chat.chart_uuid || "",
+          chartType: chat.chart_type || "",
+        };
+        console.log("formattedChats : ", formattedChat);
+        setChats((prevChats) => [...prevChats, formattedChat]);
         setChatType(chatType);
       }
     } catch (error) {
@@ -133,9 +136,9 @@ const Chat = () => {
 
   const handleSuggestClick = async (suggestion) => {
     if (isLoading || isSuggestionLoading) return;
+    setInput(suggestion);
 
     try {
-      setInput(suggestion);
       setIsSuggestionLoading(true);
       setChats((prevChats) => [...prevChats, { role: "user", content: suggestion }]);
 
@@ -163,8 +166,9 @@ const Chat = () => {
           break;
         default:
           queryResult = await dispatch(postQueryv1({ token, query_type, requiredData })).unwrap();
+          break;
       }
-      console.log("queryResult is : ", queryResult);
+      console.log("queryResult is (suggestClick) : ", queryResult);
       const chart_uuid = queryResult?.response?.chart_uuid;
 
       if (chart_uuid) {
@@ -180,7 +184,8 @@ const Chat = () => {
           },
         ]);
       }
-      await fetchSuggestions();
+      setInput("");
+      fetchSuggestions();
     } catch (error) {
       console.error("Error handling suggestion:", error);
       setChats((prevChats) => [
@@ -193,7 +198,6 @@ const Chat = () => {
       ]);
     } finally {
       setIsSuggestionLoading(false);
-      setInput("");
     }
   };
 
@@ -201,30 +205,31 @@ const Chat = () => {
     try {
       fetchSuggestions();
       const data = await dispatch(getChatHistory({ token, chat_uuid: params.chat_uuid })).unwrap();
+      console.log("the fetched chats(from history ) are : ",data);
       if (data?.history?.messages) {
-        console.log("here is the data from fetch chats : ",data.history.messages);
+        console.log("here is the data from fetch chats : ", data.history.messages);
         const formattedChats = data.history.messages.map((chat) => {
           let chartData = [];
 
-          if (chat?.chart_data) {
-            if (chat.extra.chart_type === "pie") {
-              const total = chat.extra.chart_data.reduce((sum, item) => sum + item.value, 0);
+          if (chat?.extras) {
+            if (chat.extras.chart_type === "pie") {
+              const total = chat.extras.chart_data.reduce((sum, item) => sum + item.value, 0);
               chartData = chat.extra.chart_data.map((item) => ({
                 ...item,
                 value: total > 0 ? (item.value / total) * 100 : 0,
               }));
             } else {
-              chartData = chat.extra.chart_data;
+              chartData = chat.extras.chart_data;
             }
           }
 
           return {
             role: chat.role,
             content: chat.content,
-            isChartPresent: !!chat.extra?.chart_data,
+            isChartPresent: !!chat.extras?.chart_data,
             chartData,
-            chartUuid: chat.extra?.chart_uuid || "",
-            chartType: chat.extra?.chart_type || "",
+            chartUuid: chat.extras?.chart_uuid || "",
+            chartType: chat.extras?.chart_type || "",
           };
         });
 
@@ -233,7 +238,6 @@ const Chat = () => {
       }
     } catch (error) {
       console.error("Error fetching chats:", error);
-      setChats([]);
     }
   }, [fetchSuggestions, dispatch, token, params.chat_uuid]);
 
@@ -247,7 +251,7 @@ const Chat = () => {
     setInput("");
     setIsLoading(true);
     const response = await dispatch(postQuery({ token, requiredData: { query: queryInput, chat_uuid: params.chat_uuid } })).unwrap();
-    console.log("here i am getting the response from the dispatch going to use in content", response);
+    console.log("here i am getting the response from the dispatch(handleSend) going to use in content", response);
     setIsLoading(false);
     setChats((prevChats) => [
       ...prevChats,
@@ -277,12 +281,13 @@ const Chat = () => {
 
     try {
       const response = await dispatch(postQueryv2({ token, requiredData })).unwrap();
-      console.log("here i am getting the response from the dispatchQ2(csv) going to use in content", response);
+      console.log("here i am getting the response from the dispatchQ2(HandleSsendcsv2) going to use in content", response);
       const chartCheck = checkChart(response.response);
       console.log("here i am getting the response from the dispatch chartcheck going to use in", chartCheck);
       if (chartCheck.isTrue) {
         await getChartData(chartCheck.chart_uuid);
       } else {
+        setIsLoading(false);
         setChats((prevChats) => [
           ...prevChats,
           {
@@ -291,7 +296,7 @@ const Chat = () => {
           },
         ]);
       }
-      // fetchChats();
+      fetchChats();
     } catch (error) {
       console.error("Error:", error);
       setIsLoading(false);
@@ -318,12 +323,13 @@ const Chat = () => {
 
     try {
       const result = await dispatch(postQueryv1({ token, query_type: "excel", requiredData })).unwrap();
-      console.log("here i am getting the response from the dispatchQ1 going to use in content", result);
+      console.log("here i am getting the response from the dispatchQ1(HandleEXCEL) going to use in content", result);
       const chartCheck = checkChart(result.response);
       console.log("here i am getting the response from the dispatch chartcheck going to use in", chartCheck);
       if (chartCheck.isTrue) {
         await getChartData(chartCheck.chart_uuid);
       } else {
+        setIsLoading(false);
         setChats((prevChats) => [
           ...prevChats,
           {
@@ -361,12 +367,13 @@ const Chat = () => {
 
     try {
       const response = await dispatch(postQueryv1({ token, query_type: "db", requiredData })).unwrap();
-      console.log("here i am getting the response from the dispatchQ1 going to use in content", response);
+      console.log("here i am getting the response from the dispatchQ1(HandleSendDB) going to use in content", response);
       const chartCheck = await checkChart(response.response).unwrap();
       console.log("here i am getting the response from the dispatch chartcheck going to use in", chartCheck);
       if (chartCheck.isTrue) {
         await getChartData(chartCheck.chart_uuid);
       } else {
+        setIsLoading(false);
         console.log("divresponse use in content : ", divResponse);
         setChats((prevChats) => [
           ...prevChats,
@@ -405,58 +412,11 @@ const Chat = () => {
         className={`h-[75%] w-full flex flex-col items-start justify-center p-4 ${showUploadDialog || showAddDBConfig || showDBSelectDialog ? "opacity-50" : "opacity-100"}`}
       >
         {chats.length === 0 ? (
-          <div className="flex flex-col items-center justify-center w-full">
-            <Card className="w-[630px] shadow-lg">
-              <CardHeader>
-                <CardTitle>
-                  <div className="flex flex-row gap-4 p-1">
-                    <img
-                      alt="chat-icon"
-                      src="/images/smartSuggestionIcon.png"
-                      width={100}
-                      height={100}
-                      className="w-8 h-8"
-                    />
-                    <p className="w-full text-black">Smart Suggestions</p>
-                  </div>
-                </CardTitle>
-                <CardDescription>Start Your Journey Here.</CardDescription>
-              </CardHeader>
-              <CardContent className="grid gap-4">
-                <div className="overflow-scroll h-[200px] pb-4">
-                  {isSuggestionsLoading ? (
-                    <>
-                      <div className="flex flex-col space-y-3">
-                        <div className="h-4 w-[250px] animate-pulse rounded-md bg-[#997be9]" />
-                        <div className="h-4 w-[200px] animate-pulse rounded-md bg-[#997be9]" />
-                        <div className="h-4 w-[300px] animate-pulse rounded-md bg-[#997be9]" />
-                      </div>
-                    </>
-                  ) : (
-                    suggestions?.map((notification, index) => (
-                      <div
-                        key={index}
-                        className="mb-4 grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0 bg-[#F9F9F9] p-4 rounded-md"
-                      >
-                        <span className="flex h-2 w-2 translate-y-1 rounded-full bg-[#082a3f]" />
-                        <div className="space-y-1 cursor-pointer">
-                          <p
-                            className="text-sm font-medium leading-none pointer-cursor"
-                            onClick={() => {
-                              setInput(notification);
-                              handleSuggestClick(notification);
-                            }}
-                          >
-                            {notification}
-                          </p>
-                        </div>
-                      </div>
-                    ))
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+          <ZeroChatSuggestionBox
+            isSuggestionsLoading={isSuggestionsLoading}
+            suggestions={suggestions}
+            handleSuggestClick={handleSuggestClick}
+          />
         ) : (
           <div
             ref={chatContainerRef}
@@ -469,32 +429,12 @@ const Chat = () => {
                     key={index}
                     className="flex w-full h-fit p-5 flex-col justify-center items-end gap-2"
                   >
-                    <div className="flex flex-wrap justify-end items-center relative gap-2 p-4 rounded-2xl bg-[#082a3f] text-white shadow-xl">
-                      <p className="flex-grow-0 w-full flex-shrink-0 text-md text-left text-wrap">
-                        {chat.content}
-                      </p>
-                    </div>
+                    <UserCard content={chat.content}/>
                   </div>
                 ) : (
-                  <>
-                    <div className="flex w-[70%] rounded-xl h-fit p-16 flex-col justify-start items-start gap-2 my-10 relative">
+                    <div key={index} className="flex w-[70%] rounded-xl h-fit p-16 flex-col justify-start items-start gap-2 my-10 relative">
                       <div className="w-full flex flex-row">
-                        <div className="relative w-fit h-fit">
-                          <svg
-                            width={40}
-                            height={40}
-                            viewBox="0 0 40 40"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="absolute z-[4]"
-                            preserveAspectRatio="xMidYMid meet"
-                          >
-                            <circle cx={20} cy={20} r={20} fill="#082a3f" />
-                          </svg>
-                          <p className="absolute z-[6] left-[12px] top-[4px] text-[22px] text-left text-white">
-                            N
-                          </p>
-                        </div>
+                        <NIcon/>
                         <div>
                           {chat.isChartPresent ? (
                             <p style={{ paddingLeft: "50px" }}>
@@ -507,133 +447,27 @@ const Chat = () => {
                             chat.chartType === "bar" ? (
                               <BarChartComponent
                                 rawData={chat.chartData}
-                                data={chat.chartData?.map((item) => {
-                                  const keys = Object.keys(item).filter(
-                                    (key) => key !== "label"
-                                  );
-                                  const newData = {
-                                    label: item.label,
-                                    data: item,
-                                    additionalLabels: {},
-                                  };
-                                  keys.forEach((key, index) => {
-                                    if (index < 2) {
-                                      (newData.additionalLabels)[
-                                        `label${index + 1}`
-                                      ] = {
-                                        name: key,
-                                        value: item[key],
-                                      };
-                                    }
-                                  });
-
-                                  return newData;
-                                })}
+                                data={BuildChartData(chat.chartData)}
                               />
                             ) : chat.chartType === "pie" ? (
                               <PieChartComponent
                                 rawData={chat.chartData}
-                                data={normalizeData(chat.chartData).map(
-                                  (item) => {
-                                    const keys = Object.keys(item).filter(
-                                      (key) => key !== "label"
-                                    );
-                                    const newData = {
-                                      label: item.label,
-                                      data: item,
-                                      additionalLabels: {},
-                                    };
-                                    keys.forEach((key, index) => {
-                                      if (index < 2) {
-                                        newData.additionalLabels[
-                                          `label${index + 1}`
-                                        ] = {
-                                          name: key,
-                                          value: item[key],
-                                        };
-                                      }
-                                    });
-                                    return newData;
-                                  }
-                                )}
+                                data={BuildChartData(normalizeData(chat.chartData))}
                               />
                             ) : chat.chartType === "area" ? (
                               <AreaChartComponent
                                 rawData={chat.chartData}
-                                data={chat.chartData?.map((item) => {
-                                  const keys = Object.keys(item).filter(
-                                    (key) => key !== "label"
-                                  );
-                                  const newData = {
-                                    label: item.label,
-                                    data: item,
-                                    additionalLabels: {},
-                                  };
-                                  keys.forEach((key, index) => {
-                                    if (index < 2) {
-                                      (newData.additionalLabels)[
-                                        `label${index + 1}`
-                                      ] = {
-                                        name: key,
-                                        value: item[key],
-                                      };
-                                    }
-                                  });
-
-                                  return newData;
-                                })}
+                                data={BuildChartData(chat.chartData)}
                               />
                             ) : chat.chartType === "line" ? (
                               <LineChartComponent
                                 rawData={chat.chartData}
-                                data={chat.chartData?.map((item) => {
-                                  const keys = Object.keys(item).filter(
-                                    (key) => key !== "label"
-                                  );
-                                  const newData = {
-                                    label: item.label,
-                                    data: item,
-                                    additionalLabels: {},
-                                  };
-                                  keys.forEach((key, index) => {
-                                    if (index < 2) {
-                                      (newData.additionalLabels)[
-                                        `label${index + 1}`
-                                      ] = {
-                                        name: key,
-                                        value: item[key],
-                                      };
-                                    }
-                                  });
-
-                                  return newData;
-                                })}
+                                data={BuildChartData(chat.chartData)}
                               />
                             ) : chat.chartType === "radar" ? (
                               <RadarChartComponent
                                 rawData={chat.chartData}
-                                data={chat.chartData?.map((item) => {
-                                  const keys = Object.keys(item).filter(
-                                    (key) => key !== "label"
-                                  );
-                                  const newData = {
-                                    label: item.label,
-                                    data: item,
-                                    additionalLabels: {},
-                                  };
-                                  keys.forEach((key, index) => {
-                                    if (index < 2) {
-                                      (newData.additionalLabels)[
-                                        `label${index + 1}`
-                                      ] = {
-                                        name: key,
-                                        value: item[key],
-                                      };
-                                    }
-                                  });
-
-                                  return newData;
-                                })}
+                                data={BuildChartData(chat.chartData)}
                               />
                             ) : null
                           ) : (
@@ -644,14 +478,13 @@ const Chat = () => {
                         </div>
                       </div>
                     </div>
-                  </>
                 )}
               </>
             ))}
             {isSuggestionLoading && (
               <>
                 <div
-                  className={`relative w-[100px] h-[100px] left-[62px] mr-[55px] ${isLoading ? "flex" : "flex"
+                  className={`relative w-[100px] h-[100px] left-[62px] mr-[55px] ${isLoading ? "flex" : "hidden"
                     }`}
                 >
                   <svg
@@ -705,7 +538,7 @@ const Chat = () => {
               Explore More :
               <div className="flex flex-row gap-2">
                 <motion.button
-                  className="ml-4 bg-[#082a3f] text-white px-3 py-2 rounded-full text-sm flex items-center shadow-md hover:bg-[#6a46d4] transition duration-300"
+                  className="ml-4 bg-[#082a3f] text-white px-3 py-2 rounded-full text-sm flex items-center shadow-md hover:bg-[#10a7b5] transition duration-300"
                   onClick={() => fetchSuggestions()}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
@@ -719,7 +552,7 @@ const Chat = () => {
                   />
                 </motion.button>
                 <motion.button
-                  className="ml-4 bg-[#082a3f] text-white px-3 py-2 rounded-full text-sm flex items-center shadow-md hover:bg-[#6a46d4] transition duration-300"
+                  className="ml-4 bg-[#082a3f] text-white px-3 py-2 rounded-full text-sm flex items-center shadow-md hover:bg-[#10a7b5] transition duration-300"
                   onClick={() => setIsCollapsed(!isCollapsed)}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
@@ -778,21 +611,19 @@ const Chat = () => {
           </>
         )}
       </div>
-      <div className="w-full h-fit flex flex-col items-center justify-center gap-2 bottom-0 relative">
-        <ChatInputSection
-          input={input}
-          chatType={chatType}
-          selectedModel={selectedModel}
-          handleChange={handleChange}
-          handleSend={handleSend}
-          handleSendCSV={handleSendCSV}
-          handleSendExcel={handleSendExcel}
-          handleSendDB={handleSendDB}
-          toggleUploadDialog={toggleUploadDialog}
-          openDBSelectDialog={openDBSelectDialog}
-          setSelectedModel={setSelectedModel}
-        />
-      </div>
+      <ChatInputSection
+        input={input}
+        chatType={chatType}
+        selectedModel={selectedModel}
+        handleChange={handleChange}
+        handleSend={handleSend}
+        handleSendCSV={handleSendCSV}
+        handleSendExcel={handleSendExcel}
+        handleSendDB={handleSendDB}
+        toggleUploadDialog={toggleUploadDialog}
+        openDBSelectDialog={openDBSelectDialog}
+        setSelectedModel={setSelectedModel}
+      />
 
       {showUploadDialog && (
         <UploadFileDialog

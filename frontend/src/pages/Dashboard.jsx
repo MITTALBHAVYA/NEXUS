@@ -1,6 +1,6 @@
 //Dashboard.jsx
 // import DashboardLayout from "../components/layout/DashboardLayout";
-import AutoChangingText from "../components/ui/animations/TextAnimation"; 
+import AutoChangingText from "../components/ui/animations/TextAnimation";
 import LoadingPart from "../components/ui/animations/LoadingPart";
 import AddDBConfig from "../components/ui/AddDBConfig.jsx";
 import UploadFileDialog from "../components/ui/UploadFileDialog.jsx";
@@ -124,21 +124,19 @@ const Dashboard = () => {
       ) : (
         <AutoChangingText />
       )}
-      <div className="w-full h-fit flex flex-col items-center justify-center relative bottom-4 gap-2">
-        <ChatInputSection
-          input={input}
-          chatType="chat"
-          selectedModel={selectedModel}
-          handleChange={handleChange}
-          handleSend={handleSend}
-          handleSendCSV={() => {}}
-          handleSendExcel={() => {}}
-          handleSendDB={() => {}}
-          toggleUploadDialog={toggleUploadDialog}
-          openDBSelectDialog={toggleDialog}
-          setSelectedModel={setSelectedModel}
-        />
-      </div>
+      <ChatInputSection
+        input={input}
+        chatType="chat"
+        selectedModel={selectedModel}
+        handleChange={handleChange}
+        handleSend={handleSend}
+        handleSendCSV={() => { }}
+        handleSendExcel={() => { }}
+        handleSendDB={() => { }}
+        toggleUploadDialog={toggleUploadDialog}
+        openDBSelectDialog={toggleDialog}
+        setSelectedModel={setSelectedModel}
+      />
 
       {showDialog && (
         <DBSelectDialog
@@ -171,7 +169,7 @@ const Dashboard = () => {
           </div>
         </div>
       )}
-      </>
+    </>
     // </DashboardLayout>
   );
 };

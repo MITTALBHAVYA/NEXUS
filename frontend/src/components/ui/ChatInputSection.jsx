@@ -33,6 +33,7 @@ const ChatInputSection = ({
   }, []);
   
   return (
+    <div className="w-full h-fit flex flex-col items-center justify-center relative gap-2 bottom-4 ">
     <div className="w-full max-w-5xl mx-auto relative p-4 px-8">
       <div className="relative">
         <input
@@ -333,6 +334,7 @@ const ChatInputSection = ({
           </button>
         </div>
       </div>
+    </div>
     </div>
   );
 }
