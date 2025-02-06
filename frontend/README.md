@@ -1,8 +1,8 @@
 
 ```markdown
-# 🚀 GDSC SLACK Frontend
+# 🚀 NEXUS Frontend
 
-This is the frontend part of the **GDSC SLACK** project, a modern team collaboration platform designed for seamless communication and productivity. It is built using **React**, **Redux**, and **Tailwind CSS** for a fast, responsive, and intuitive user experience.
+This is the frontend part of the **NEXUS** project, a modern team collaboration platform designed for seamless communication and productivity. It is built using **React**, **Redux**, and **Tailwind CSS** for a fast, responsive, and intuitive user experience.
 
 ## 🛠 Tech Stack
 
@@ -19,7 +19,7 @@ Make sure you have **Node.js** and **npm** installed on your system.
 ### Setup
 1. Clone the repository:
    ```bash
-   git clone https://github.com/MITTALBHAVYA/slack-GDSC-Mycut
+   git clone https://github.com/MITTALBHAVYA/NEXUS
    ```
 
 2. Navigate to the frontend folder:
@@ -57,7 +57,7 @@ This will execute all unit and integration tests using **Jest** and **React Test
 
 ## 🤝 Contributing
 
-We welcome contributions to improve the frontend of **GDSC SLACK**! To get started:
+We welcome contributions to improve the frontend of **NEXUS**! To get started:
 
 1. Fork the repository.
 2. Create a new branch for your feature.
