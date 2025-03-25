@@ -1,0 +1,71 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Logs and databases
+*.log
+*.sqlite3
+*.db
+
+# Python environment files
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+
+# VS Code settings
+.vscode/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Django / Flask / FastAPI specific
+instance/
+.env
+*.pem
+
+# Node.js specific
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+.pnpm-debug.log
+
+# Build artifacts
+dist/
+.out/
+.next/
+.nyc_output/
+coverage/
+*.tsbuildinfo
+
+# dotenv environment variables
+.env.local
+.env.development
+.env.production
+.env.test
+.env*.local
+
+# OS specific
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
+*.swo
+
+# Other
+*.bak
+*.tmp
