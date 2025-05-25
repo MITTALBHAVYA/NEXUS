@@ -164,5 +164,5 @@ watchfiles
 websocket-client
 websockets
 wrapt
-yarl
+# yarl
 zipp

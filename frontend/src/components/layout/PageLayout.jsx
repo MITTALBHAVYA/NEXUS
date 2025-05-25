@@ -5,9 +5,8 @@ const PageLayout = ({ children }) => {
         <div
             className="bg-cover bg-center min-h-screen flex flex-col"
             style={{
-                backgroundImage: 'url(/images/newbg6.jpg)',
-                backgroundColor: 'grey', // Set background color
-                backgroundBlendMode: 'overlay', // Blend the color and image
+                backgroundColor: 'white', // Changed from grey to white
+                backgroundBlendMode: 'overlay',
             }}
         >
             {children}

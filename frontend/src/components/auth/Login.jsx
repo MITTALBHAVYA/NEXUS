@@ -1,20 +1,19 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login, clearError } from "../../app/services/authSlice.js";
-import {getUserInfo} from "../../app/services/userSlice.js"
-import { useNavigate } from "react-router-dom";
+import { getUserInfo } from "../../app/services/userSlice.js";
+import { useNavigate, Link } from "react-router-dom";
 import Navbar from "../layout/Navbar.jsx";
-import { MdOutlineMailOutline } from "react-icons/md";
 import PageLayout from "../layout/PageLayout.jsx";
-import { MdErrorOutline } from "react-icons/md";
-// import { getAllChatHistory } from "../../app/services/chatSlice.js";
+import { MdOutlineMailOutline, MdErrorOutline, MdLock } from "react-icons/md";
+import { FcGoogle } from "react-icons/fc";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLoading, error} = useSelector((state) => state.auth);
+  const { isLoading, error } = useSelector((state) => state.auth);
 
   useEffect(() => {
     return () => {
@@ -37,9 +36,8 @@ const Login = () => {
     try {
       const response = await dispatch(login({ email, password })).unwrap();
       if (response.access_token) {
-        const token = response.access_token
+        const token = response.access_token;
         dispatch(getUserInfo(token));
-        // dispatch(getAllChatHistory(token));
         navigate("/dashboard");
       }
     } catch (err) {
@@ -47,71 +45,111 @@ const Login = () => {
     }
   };
 
-  const loginWithGoogle = () => {
-    navigate("/auth/google");
+  // Function stub for Google login (no actual functionality)
+  const handleGoogleLogin = () => {
+    alert("Google Sign-In is currently not available.");
   };
 
   return (
     <PageLayout>
       <Navbar variant="signin" />
-      <div className="relative flex flex-row items-center justify-center">
-        <div className="centered-container relative bg-gradient-to-br from-[#d63f0a] via-[#334155] to-[#aeaeae] w-[32rem] rounded-none md:w-[45rem] md:rounded-[10rem] p-8">
-          <h1 className="text-white text-3xl sm:text-4xl font-bold mb-4">
-            Welcome Back to Nexus
-          </h1>
-          <p className="text-[#FFB409] text-lg sm:text-xl font-medium mb-8">
-            Sign in to unlock AI-driven insights and supercharge your workflow.
-          </p>
-          <button
-            className="signin-ggl-btn flex items-center justify-center gap-3 py-3 px-6 text-white font-bold rounded-full bg-gradient-to-r from-[#0f172a] to-[#1e293b] shadow-md hover:shadow-lg hover:scale-105 transition-transform mb-4"
-            onClick={loginWithGoogle}
-          >
-            <img src="/images/google_icon.png" alt="Google Icon" className="h-6 w-6" />
-            <span>Sign in with Google</span>
-          </button>
-          <span className="or text-white font-medium text-sm">OR</span>
-          <form onSubmit={handleSubmit} className="mt-6">
-            <div className="mb-4">
-              <input
-                id="email-address"
-                name="email"
-                type="email"
-                required
-                placeholder="name@workemail.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 text-gray-800 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#FFB409]"
-              />
+      <div className="flex items-center justify-center min-h-[80vh] px-4">
+        <div className="w-full max-w-md bg-white rounded-xl shadow-lg overflow-hidden">
+          <div className="bg-gradient-to-r from-indigo-600 to-blue-500 py-6 px-8">
+            <h1 className="text-white text-2xl font-medium">Welcome to Nexus</h1>
+            <p className="text-blue-100 text-sm mt-1">Sign in to continue</p>
+          </div>
+          
+          <div className="px-8 py-6">
+            {/* Google Sign-In Button (UI only) */}
+            <button
+              className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors mb-6"
+              onClick={handleGoogleLogin}
+            >
+              <FcGoogle size={20} />
+              <span className="text-gray-700 font-medium">Sign in with Google</span>
+            </button>
+            
+            <div className="flex items-center my-4">
+              <div className="flex-grow h-px bg-gray-200"></div>
+              <span className="px-3 text-gray-500 text-sm">or</span>
+              <div className="flex-grow h-px bg-gray-200"></div>
             </div>
-            <div className="mb-6">
-              <input
-                id="password"
-                name="password"
-                type="password"
-                required
-                placeholder="********"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 text-gray-800 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#FFB409]"
-              />
-            </div>
-            {error && (
-              <div className="flex items-center justify-center text-red-700 text-sm border border-red-300 bg-red-100 rounded-lg px-4 py-3 mt-3 shadow-md">
-                <MdErrorOutline className="text-white bg-red-500 rounded-full p-1 mr-2" size={30} />
-                <span className="font-bold">{error}</span>
+            
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <MdOutlineMailOutline className="text-gray-400" size={20} />
+                </div>
+                <input
+                  id="email-address"
+                  name="email"
+                  type="email"
+                  required
+                  placeholder="Your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
               </div>
-            )}
-            <div>
+              
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <MdLock className="text-gray-400" size={20} />
+                </div>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  required
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+              
+              <div className="flex justify-end">
+                <Link to="/auth/forgot-password" className="text-sm text-blue-600 hover:text-blue-800">
+                  Forgot password?
+                </Link>
+              </div>
+              
+              {error && (
+                <div className="flex items-center text-red-600 text-sm bg-red-50 rounded-lg px-4 py-3">
+                  <MdErrorOutline className="flex-shrink-0 mr-2" size={18} />
+                  <span>{error}</span>
+                </div>
+              )}
+              
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full flex items-center justify-center gap-2 py-3 px-6 text-white font-bold rounded-full bg-gradient-to-r from-[#FFB409] to-[#FFA726] shadow-md hover:shadow-lg hover:scale-105 transition-transform"
+                className="w-full py-3 px-4 bg-gradient-to-r from-indigo-600 to-blue-500 text-white font-medium rounded-lg hover:from-indigo-700 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all disabled:opacity-70"
               >
-                <MdOutlineMailOutline />
-                <span>{isLoading ? "Signing in..." : "Sign in with Email"}</span>
+                {isLoading ? (
+                  <div className="flex items-center justify-center">
+                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Signing in...
+                  </div>
+                ) : (
+                  "Sign in"
+                )}
               </button>
+            </form>
+            
+            <div className="text-center mt-6">
+              <p className="text-gray-600 text-sm">
+                Don't have an account?{" "}
+                <Link to="/auth/register" className="text-blue-600 font-medium hover:text-blue-800">
+                  Sign up
+                </Link>
+              </p>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </PageLayout>

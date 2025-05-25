@@ -1,46 +1,79 @@
 import PageLayout from '../components/layout/PageLayout.jsx';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { HiOutlineEmojiSad } from 'react-icons/hi';
 
 const NotFound = () => {
   return (
     <PageLayout>
-      <div className="flex items-center justify-center h-screen bg-gradient-to-br from-[#d63f0a] via-[#a6a6a6] to-[#d63f0a] text-white">
-        <div className="text-center ">
-          {/* 404 Text with Image */}
-          <div className="flex items-center justify-center gap-4 bg-gradient-to-br from-[#334155] via-[#334155] to-[#d63f0a] rounded-tl-[10rem] rounded-br-[10rem]">
-            <h1 className="text-[12rem] md:text-[16rem] font-extrabold tracking-tight animate-pulse">
-              4
+      <div className="flex items-center justify-center h-screen bg-white">
+        <div className="text-center max-w-md mx-auto px-4">
+          {/* 404 Text with Animation */}
+          <motion.div 
+            className="mb-6"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <h1 className="text-[6rem] font-bold tracking-tight bg-gradient-to-r from-[#0faab8] to-[#133044] bg-clip-text text-transparent">
+              404
             </h1>
-            <img
-              src="/images/Nexus_logo_white1.png"
-              alt="Logo"
-              className="w-[10rem] h-[10rem] md:w-[12rem] md:h-[12rem] lg:w-[14rem] lg:h-[14rem] animate-spin-slow shadow-xl rounded-full border-4 border-[#f15626] hover:scale-110 transition-transform duration-500 ease-in-out"
-              style={{
-                animation: "spin-smooth 4s linear infinite",
-              }}
-            />
+          </motion.div>
 
-            <h1 className="text-[12rem] md:text-[16rem] font-extrabold tracking-tight animate-pulse">
-              4
-            </h1>
-
-          </div>
+          {/* Icon */}
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="flex justify-center mb-8"
+          >
+            <HiOutlineEmojiSad className="text-gray-400 w-20 h-20" />
+          </motion.div>
 
           {/* Error Message */}
-          <p className="mt-8 text-xl md:text-2xl lg:text-3xl text-gray-800">
-            Oops! The page you’re looking for doesn’t exist.
-          </p>
+          <motion.p 
+            className="mb-8 text-xl text-gray-600"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            Oops! The page you're looking for doesn't exist.
+          </motion.p>
 
           {/* Back to Home Button */}
-          <Link
-            to="/"
-            className="flex items-center justify-center w-full h-[5rem] mb-2 text-lg text-white font-bold rounded-lg border border-[#f15626] bg-[#ad2701] transition-all duration-300 ease-in-out hover:bg-[#0f172a] hover:text-wheat hover:border-[#f15626] shadow-lg"
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
           >
-            <span className="ml-6 text-base font-medium uppercase text-shadow">
-              Go Back to Home
-            </span>
-          </Link>
+            <Link
+              to="/"
+              className="inline-block px-6 py-3 bg-gradient-to-r from-[#0faab8] to-[#133044] text-white text-sm font-medium rounded-md hover:shadow-lg transition-all"
+            >
+              Back to Home
+            </Link>
+          </motion.div>
 
+          {/* Dynamic Dots Animation */}
+          <div className="flex justify-center mt-12 space-x-2">
+            {[...Array(5)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="w-2 h-2 rounded-full bg-[#0faab8]"
+                initial={{ opacity: 0.3 }}
+                animate={{ 
+                  opacity: [0.3, 1, 0.3],
+                  scale: [1, 1.2, 1]
+                }}
+                transition={{ 
+                  duration: 1.5, 
+                  repeat: Infinity, 
+                  delay: i * 0.2,
+                  ease: "easeInOut"
+                }}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </PageLayout>

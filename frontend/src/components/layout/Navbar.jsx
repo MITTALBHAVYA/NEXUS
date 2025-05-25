@@ -3,17 +3,22 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { FaChartBar, FaClipboardList } from 'react-icons/fa';
 import { HiOutlineMenuAlt3, HiOutlineX } from 'react-icons/hi';
+import { motion } from 'framer-motion';
 
 const Navbar = ({ variant = 'simple' }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const Logo = () => (
-    <div className="nexuslogo text-white font-bold tracking-wider flex items-center">
-      <Link to="/" className="text-shadow-md text-[3rem] lg:text-[3rem] flex items-center nexuslogolink">
-        <img src="/images/Nexus_logo_white1.png" alt="Nexus Logo" className="logo-image w-[6rem] h-[6rem]" />
-        NEXUS
+    <motion.div 
+      className="nexuslogo font-bold tracking-wider flex items-center"
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <Link to="/" className="text-shadow-md text-[1.8rem] lg:text-[2.2rem] flex items-center nexuslogolink">
+        <span className="bg-gradient-to-r from-[#0faab8] to-[#133044] bg-clip-text text-transparent font-bold">NEXUS</span>
       </Link>
-    </div>
+    </motion.div>
   );
 
   const DesktopNav = () => {
@@ -22,28 +27,49 @@ const Navbar = ({ variant = 'simple' }) => {
         return null;
       case 'signin':
         return (
-          <div className="hidden lg:flex flex-col items-center space-x-8">
-            <span className="text-white font-bold tracking-wider" style={{ fontFamily: 'Quicksand, sans-serif', letterSpacing: '0.6px' }}>
-              New to NEXUS?
-            </span>
-            <Link to="/auth/register" className="signuplink">Create an account</Link>
-          </div>
+          <motion.div 
+            className="hidden lg:flex items-center"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <Link 
+              to="/auth/register" 
+              className="bg-gradient-to-r from-[#0faab8] to-[#133044] text-white px-4 py-1.5 rounded-md text-sm font-medium hover:shadow-md transition-all"
+            >
+              Create an account
+            </Link>
+          </motion.div>
         );
       case 'landing':
         return (
-          <div className="hidden lg:flex items-center space-x-8">
-            <Link to="/dashboard" className="flex items-center text-[#aa2701] hover:text-[#252e3d] text-[2rem] lg:text-[3rem]">
-              <FaChartBar className="w-6 h-6 lg:w-8 lg:h-8 mr-3 lg:mr-4" />
-              <span className="text-shadow-md text-lg lg:text-2xl">Dashboard</span>
+          <motion.div 
+            className="hidden lg:flex items-center space-x-4"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <Link 
+              to="/dashboard" 
+              className="text-[#133044] hover:text-[#0faab8] transition-colors flex items-center"
+            >
+              <FaChartBar className="w-4 h-4 mr-1.5" />
+              <span className="font-medium text-sm">Dashboard</span>
             </Link>
-            <Link to="/insights" className="flex items-center text-[#aa2701] hover:text-[#252e3d] text-[2rem] lg:text-[3rem]">
-              <FaClipboardList className="w-6 h-6 lg:w-8 lg:h-8 mr-3 lg:mr-4" />
-              <span className="text-shadow-md text-lg lg:text-2xl">Insights</span>
+            <Link 
+              to="/insights" 
+              className="text-[#133044] hover:text-[#0faab8] transition-colors flex items-center"
+            >
+              <FaClipboardList className="w-4 h-4 mr-1.5" />
+              <span className="font-medium text-sm">Insights</span>
             </Link>
-            <Link to="/auth/login" className="border-4 border-white text-white bg-[#252e3d] rounded-lg px-6 py-3 lg:px-8 lg:py-4 font-bold text-lg lg:text-2xl hover:bg-[#f15626] hover:text-white transition duration-300">
-              SIGN IN
+            <Link 
+              to="/auth/login" 
+              className="bg-gradient-to-r from-[#0faab8] to-[#133044] text-white px-4 py-1.5 rounded-md text-sm font-medium hover:shadow-md transition-all"
+            >
+              Sign In
             </Link>
-          </div>
+          </motion.div>
         );
       default:
         return null;
@@ -59,39 +85,65 @@ const Navbar = ({ variant = 'simple' }) => {
           return null;
         case 'signin':
           return (
-            <Link
-              to="/auth/register"
-              className="text-white text-xl font-semibold py-4 px-8 rounded-md hover:bg-[#f15626] hover:text-white transition duration-300 transform hover:scale-105"
-              onClick={() => setMenuOpen(false)}
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
             >
-              Create an account
-            </Link>
+              <Link
+                to="/auth/register"
+                className="text-[#133044] text-sm font-medium py-2 px-4 rounded-md bg-white hover:bg-gray-50 transition-colors w-full flex justify-center items-center border border-[#0faab8]"
+                onClick={() => setMenuOpen(false)}
+              >
+                Create an account
+              </Link>
+            </motion.div>
           );
         case 'landing':
           return (
-            <>
-              <Link
-                to="/dashboard"
-                className="text-white text-2xl font-semibold py-4 px-8 rounded-md hover:bg-[#f15626] hover:text-white transition duration-300 transform hover:scale-105"
-                onClick={() => setMenuOpen(false)}
+            <div className="flex flex-col space-y-3">
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.1 }}
               >
-                Dashboard
-              </Link>
-              <Link
-                to="/insights"
-                className="text-white text-2xl font-semibold py-4 px-8 rounded-md hover:bg-[#f15626] hover:text-white transition duration-300 transform hover:scale-105"
-                onClick={() => setMenuOpen(false)}
+                <Link
+                  to="/dashboard"
+                  className="text-[#133044] text-sm font-medium py-2 px-4 rounded-md hover:bg-gray-100 transition-colors w-full flex items-center"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <FaChartBar className="w-4 h-4 mr-2" />
+                  Dashboard
+                </Link>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.2 }}
               >
-                Insights
-              </Link>
-              <Link
-                to="/auth/login"
-                className="text-white text-2xl font-semibold py-4 px-8 rounded-md hover:bg-[#f15626] hover:text-white transition duration-300 transform hover:scale-105"
-                onClick={() => setMenuOpen(false)}
+                <Link
+                  to="/insights"
+                  className="text-[#133044] text-sm font-medium py-2 px-4 rounded-md hover:bg-gray-100 transition-colors w-full flex items-center"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <FaClipboardList className="w-4 h-4 mr-2" />
+                  Insights
+                </Link>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.3 }}
               >
-                Sign In
-              </Link>
-            </>
+                <Link
+                  to="/auth/login"
+                  className="bg-gradient-to-r from-[#0faab8] to-[#133044] text-white text-sm font-medium py-2 px-4 rounded-md transition-colors w-full flex justify-center"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Sign In
+                </Link>
+              </motion.div>
+            </div>
           );
         default:
           return null;
@@ -102,23 +154,31 @@ const Navbar = ({ variant = 'simple' }) => {
     if (!menuContent) return null;
 
     return (
-      <div className="absolute top-full left-0 right-0 bg-gradient-to-br from-[#000000cc] to-[#1f1f1fcc] backdrop-blur-md flex flex-col items-center py-8 space-y-6 rounded-b-lg shadow-lg lg:hidden transition-all duration-500 ease-in-out transform">
+      <motion.div
+        initial={{ opacity: 0, height: 0 }}
+        animate={{ opacity: 1, height: 'auto' }}
+        exit={{ opacity: 0, height: 0 }}
+        transition={{ duration: 0.3 }}
+        className="absolute top-full left-0 right-0 bg-white flex flex-col items-center py-4 px-3 space-y-3 rounded-b-md shadow-md lg:hidden z-50"
+      >
         {menuContent}
-      </div>
+      </motion.div>
     );
   };
 
   return (
-    <nav className="relative top-0 left-0 right-0 z-30 bg-transparent px-8 py-5 flex items-center justify-between w-full">
+    <nav className="sticky top-0 left-0 right-0 z-30 bg-white/80 backdrop-blur-sm px-4 py-2 flex items-center justify-between w-full border-b border-gray-100">
       <Logo />
       <DesktopNav />
       {variant !== 'simple' && (
-        <button
-          className="lg:hidden text-white text-[3rem] lg:text-[4rem] hover:text-[#f15626] transition duration-300 transform hover:scale-110"
+        <motion.button
+          className="lg:hidden text-[#133044] text-xl hover:text-[#0faab8] transition-colors"
           onClick={() => setMenuOpen(!menuOpen)}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
         >
           {menuOpen ? <HiOutlineX /> : <HiOutlineMenuAlt3 />}
-        </button>
+        </motion.button>
       )}
       <MobileMenu />
     </nav>
