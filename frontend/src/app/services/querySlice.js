@@ -17,7 +17,6 @@ export const postQuery = createAsyncThunk(
     async ({ token, requiredData }, { rejectWithValue }) => {
         try {
             const response = await api.post(`/v1/query?token=${token}`, requiredData );
-            console.log("postQuesy result are : ",response.data.data);
             return response.data.data;
         } catch (error) {
             return rejectWithValue(
@@ -48,7 +47,6 @@ export const postQueryv2 = createAsyncThunk(
     async ({ token, requiredData }, { rejectWithValue }) => {
         try {
             const response = await api.post(`/v2/query/csv?token=${token}`, requiredData );
-            console.log("postQuery2 result are from slice : ",response.data.data);
             return response.data.data;
         } catch (error) {
             return rejectWithValue(
