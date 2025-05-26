@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 import os
 from datetime import timedelta
+from functools import lru_cache
 
 load_dotenv()
 
@@ -28,6 +29,9 @@ class Config:
     # Anthropic
     ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
 
+    # GOOGLE OAuth
+    GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+
     # CHROMA
     CHROMA_DB_PATH = os.getenv("CHROMA_DB_PATH")
 
@@ -49,3 +53,14 @@ class Config:
 
     # DB
     SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg2://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOSTNAME}:{POSTGRES_PORT}/{POSTGRES_DB}"
+
+
+@lru_cache()
+def get_settings():
+    """
+    Returns a cached instance of the Config class.
+    This function is used to access application settings across the application.
+    The lru_cache decorator ensures that the function is only called once,
+    and subsequent calls return the cached result.
+    """
+    return Config()

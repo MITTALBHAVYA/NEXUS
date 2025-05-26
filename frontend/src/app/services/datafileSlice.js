@@ -31,8 +31,6 @@ export const uploadDataFile = createAsyncThunk(
                     },
                 }
             );
-
-            console.log("Uploaded file response data:", response.data?.data);
             return response.data?.data;
         } catch (error) {
             console.error("Error uploading file:", error);

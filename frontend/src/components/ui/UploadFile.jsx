@@ -32,11 +32,8 @@ const validateAndPrepareFile = (file, setIsLoading, setUploadStatus) => {
     setUploadStatus("error");
     return false;
   }
-
-  console.log("file is ", file);
   const formData = new FormData();
   formData.append("file", new File([file], file.name, { type: "text/csv" }));  
-  console.log("form data is: ", formData);
 
   return { formData, file_type };
 };

@@ -194,9 +194,10 @@ const ChatInputSection = ({
         </DropdownMenu>
 
         {/* Model Selector */}
-        <DropdownMenu>
+        <DropdownMenu className="hidden">
           <DropdownMenuTrigger 
             className="
+              hidden
               absolute 
               top-4 
               left-4 
@@ -233,6 +234,7 @@ const ChatInputSection = ({
           </DropdownMenuTrigger>
           <DropdownMenuContent 
             className="
+              hidden
               bg-[#0fa2b1]
               text-[white]
               shadow-2xl 
@@ -262,6 +264,7 @@ const ChatInputSection = ({
                 key={index}
                 onClick={() => !item.lock && setSelectedModel(item.label)}
                 className={`
+                  hidden
                   flex 
                   items-center 
                   gap-3 

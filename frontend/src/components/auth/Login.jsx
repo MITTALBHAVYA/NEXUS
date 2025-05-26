@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { login, clearError } from "../../app/services/authSlice.js";
+import { login, clearError, googleLogin } from "../../app/services/authSlice.js";
 import { getUserInfo } from "../../app/services/userSlice.js";
 import { useNavigate, Link } from "react-router-dom";
+import { GoogleLogin } from '@react-oauth/google';
 import Navbar from "../layout/Navbar.jsx";
 import PageLayout from "../layout/PageLayout.jsx";
 import { MdOutlineMailOutline, MdErrorOutline, MdLock } from "react-icons/md";
-import { FcGoogle } from "react-icons/fc";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -45,9 +45,21 @@ const Login = () => {
     }
   };
 
-  // Function stub for Google login (no actual functionality)
-  const handleGoogleLogin = () => {
-    alert("Google Sign-In is currently not available.");
+  const handleGoogleLoginSuccess = async (credentialResponse) => {
+    try {
+      const response = await dispatch(googleLogin(credentialResponse.credential)).unwrap();
+      if (response.access_token) {
+        const token = response.access_token;
+        dispatch(getUserInfo(token));
+        navigate("/dashboard");
+      }
+    } catch (err) {
+      console.error("Google login failed:", err);
+    }
+  };
+
+  const handleGoogleLoginError = () => {
+    console.error("Google Sign In was unsuccessful.");
   };
 
   return (
@@ -59,23 +71,25 @@ const Login = () => {
             <h1 className="text-white text-2xl font-medium">Welcome to Nexus</h1>
             <p className="text-blue-100 text-sm mt-1">Sign in to continue</p>
           </div>
-          
+
           <div className="px-8 py-6">
-            {/* Google Sign-In Button (UI only) */}
-            <button
-              className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors mb-6"
-              onClick={handleGoogleLogin}
-            >
-              <FcGoogle size={20} />
-              <span className="text-gray-700 font-medium">Sign in with Google</span>
-            </button>
-            
+            <div className="flex justify-center mb-6">
+              <GoogleLogin
+                onSuccess={handleGoogleLoginSuccess}
+                onError={handleGoogleLoginError}
+                shape="pill"
+                theme="filled_blue"
+                text="signin_with"
+                useOneTap
+              />
+            </div>
+
             <div className="flex items-center my-4">
               <div className="flex-grow h-px bg-gray-200"></div>
               <span className="px-3 text-gray-500 text-sm">or</span>
               <div className="flex-grow h-px bg-gray-200"></div>
             </div>
-            
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -92,7 +106,7 @@ const Login = () => {
                   className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
-              
+
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                   <MdLock className="text-gray-400" size={20} />
@@ -108,20 +122,20 @@ const Login = () => {
                   className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
-              
+
               <div className="flex justify-end">
                 <Link to="/auth/forgot-password" className="text-sm text-blue-600 hover:text-blue-800">
                   Forgot password?
                 </Link>
               </div>
-              
+
               {error && (
                 <div className="flex items-center text-red-600 text-sm bg-red-50 rounded-lg px-4 py-3">
                   <MdErrorOutline className="flex-shrink-0 mr-2" size={18} />
                   <span>{error}</span>
                 </div>
               )}
-              
+
               <button
                 type="submit"
                 disabled={isLoading}
@@ -140,7 +154,7 @@ const Login = () => {
                 )}
               </button>
             </form>
-            
+
             <div className="text-center mt-6">
               <p className="text-gray-600 text-sm">
                 Don't have an account?{" "}

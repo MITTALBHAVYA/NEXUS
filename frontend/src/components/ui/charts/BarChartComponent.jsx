@@ -8,7 +8,6 @@ const BarChartComponent = ({
   data,
   rawData,
 })=>{
-  console.log("bar chart called here is data ",data, "and raw data ",rawData);
   const chartRef = useRef(null);
   const [isDownloading, setIsDownloading] = useState(false);
 

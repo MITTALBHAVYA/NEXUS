@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 
 
 const AreaChartComponent = ({ data, rawData }) => {
-  console.log("aREA CCHART CALLED");
     const label1 = data[0]?.additionalLabels?.label1?.name ?? null;
     const label2 = data[0]?.additionalLabels?.label2?.name ?? null;
     const chartRef = useRef(null);

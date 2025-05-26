@@ -53,53 +53,47 @@ const DatasourcePage = () => {
     dispatch(getDatasource({ token }));
   }, [dispatch, token]);
 
-  const downloadFile = ({
-    document_id,
-    file_type,
-    docName,
-    setDownloadingDocId,
-  }) => {
-    try {
-      setDownloadingDocId(document_id);
-      const blob = dispatch(
-        downloadDataFile({ token, document_id, file_type })
-      );
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = docName;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.log("Error downloading file : ", error);
-    } finally {
-      setDownloadingDocId(null);
-    }
-  };
+const downloadFile = ({ document_id, file_type, docName, setDownloadingDocId }) => {
+  try {
+    setDownloadingDocId(document_id);
+    const blob = dispatch(downloadDataFile({ token, document_id, file_type }));
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = docName;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    window.URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error("Error downloading file : ", error);
+  } finally {
+    setDownloadingDocId(null);
+  }
+};
 
-  const deleteFile = ({ document_id, file_type, setDeletingDocId }) => {
-    try {
-      setDeletingDocId(document_id);
-      dispatch(deleteDataFile({ token, document_id, file_type }));
-    } catch (error) {
-      console.log("Error deleting file : ", error);
-    } finally {
-      setDeletingDocId(null);
-    }
-  };
+const deleteFile = ({ document_id, file_type, setDeletingDocId }) => {
+  try {
+    setDeletingDocId(document_id);
+    dispatch(deleteDataFile({ token, document_id, file_type }));
+  } catch (error) {
+    console.error("Error deleting file : ", error);
+  } finally {
+    setDeletingDocId(null);
+  }
+};
 
-  const deleteDBConfig = ({ db_config_id, setDeletingDocId }) => {
-    try {
-      setDeletingDocId(db_config_id);
-      dispatch(deleteDBconfig({ token, db_config_id }));
-    } catch (error) {
-      console.log("Error deleting DB config : ", error);
-    } finally {
-      setDeletingDocId(null);
-    }
-  };
+const deleteDBConfig = ({ db_config_id, setDeletingDocId }) => {
+  try {
+    setDeletingDocId(db_config_id);
+    dispatch(deleteDBconfig({ token, db_config_id }));
+  } catch (error) {
+    console.error("Error deleting DB config : ", error);
+  } finally {
+    setDeletingDocId(null);
+  }
+};
+
 
   const toggleUploadDialog = () => {
     setShowUploadDialog(!showUploadDialog);

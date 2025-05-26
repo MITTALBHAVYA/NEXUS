@@ -83,7 +83,6 @@ const Dashboard = () => {
       .unwrap()
       .then((data) => {
         if (data?.chat_uuid) {
-          console.log("navigate called");
           navigate(`/c/${data.chat_uuid}?token=${token}`);
         }
       })

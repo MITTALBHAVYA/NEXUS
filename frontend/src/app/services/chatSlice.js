@@ -26,7 +26,6 @@ export const getAllChatHistory = createAsyncThunk(
     async (token, { rejectWithValue }) => {
         try {
             const response = await api.get(`/v1/chat/?token=${token}`);
-            console.log("here is the chat history :",response.data.data);
             return response.data.data;
         } catch (error) {
             return rejectWithValue(error.response?.data || { message: "Failed to fetch chat info" });
