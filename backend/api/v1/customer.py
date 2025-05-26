@@ -1,4 +1,4 @@
-from fastapi import APIRouter, status, Depends, Header, Response
+from fastapi import APIRouter, status, Depends, Header, Response, Body
 from data_response.base_response import APIResponseBase
 from schemas.customer import (
     CustomerLoginRequest,
@@ -6,6 +6,7 @@ from schemas.customer import (
     CustomerRegisterRequest,
     CustomerRegisterResponse,
     CustomerProfileUpdateRequest,
+    GoogleLoginRequest
 )
 from helper.auth import JWTHandler, RefreshTokenData, AccessTokenData, get_current_user
 from db import get_db
@@ -13,8 +14,15 @@ from sqlalchemy.orm import Session
 from db.queries.customer import CustomerQuery
 from logger import logger
 import re
+from google.oauth2 import id_token
+from google.auth.transport import requests
 
 router = APIRouter(prefix="/customer", tags=["customer"])
+
+# Add Google OAuth Client ID from environment variables or config
+from config import get_settings
+settings = get_settings()
+GOOGLE_CLIENT_ID = settings.GOOGLE_CLIENT_ID
 
 
 @router.post("/register", status_code=status.HTTP_201_CREATED)
@@ -183,10 +191,11 @@ async def get_customer_profile(
         logger.error("Customer not found")
         response.status_code = status.HTTP_404_NOT_FOUND
         return APIResponseBase.not_found(message="Customer not found")
-
+    
+    response_data = customer.to_dict()
     response.status_code = status.HTTP_200_OK
     return APIResponseBase.success_response(
-        data=customer.to_dict(),
+        data=response_data,
         message="Customer found",
     )
 
@@ -228,3 +237,96 @@ async def update_customer_profile(
         data=customer.to_dict(),
         message="Customer profile updated successfully",
     )
+
+
+@router.post("/google-login")
+async def google_login(
+    request: GoogleLoginRequest,
+    response: Response, 
+    db: Session = Depends(get_db)
+) -> APIResponseBase:
+    """
+    Logs in a customer with a Google OAuth credential token.
+    
+    Args:
+        request (GoogleLoginRequest): The Google login request object containing the credential token.
+        response (Response): The response object to be returned.
+        db (Session, optional): The database session. Defaults to Depends(get_db).
+    
+    Returns:
+        APIResponseBase: The API response containing the access and refresh tokens.
+    """
+    try:
+        # Verify the Google token
+        idinfo = id_token.verify_oauth2_token(
+            request.credential, requests.Request(), GOOGLE_CLIENT_ID
+        )
+        
+        # Get user info from the token
+        email = idinfo.get('email')
+        name = idinfo.get('name')
+        email_verified = idinfo.get('email_verified', False)
+        
+        if not email or not email_verified:
+            logger.error("Invalid Google token or email not verified")
+            response.status_code = status.HTTP_401_UNAUTHORIZED
+            return APIResponseBase.unauthorized(message="Invalid Google token or email not verified")
+        
+        # Check if user exists
+        customer = CustomerQuery.get_customer_by_email(db, email)
+        
+        # If user doesn't exist, create a new one
+        if not customer:
+            # Generate a random secure password for the Google user
+            import secrets
+            import string
+            password = ''.join(secrets.choice(string.ascii_letters + string.digits) for _ in range(16))
+            
+            customer = CustomerQuery.create_customer(
+                db, name, email, password, is_google_user=True
+            )
+            
+            if not customer:
+                logger.error("Failed to create customer from Google login")
+                response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+                return APIResponseBase.internal_server_error(
+                    message="Failed to create customer from Google login"
+                )
+                
+            db.commit()
+        
+        # Generate tokens
+        access_token_data = {
+            "uuid": str(customer.uuid),
+            "email": customer.email,
+            "name": customer.name,
+        }
+        refresh_token_data = {
+            "uuid": str(customer.uuid),
+        }
+        
+        access_token = JWTHandler.create_access_token(access_token_data)
+        refresh_token = JWTHandler.create_refresh_token(refresh_token_data)
+        
+        # Update last login
+        CustomerQuery.update_customer_last_login(db, customer)
+        
+        response.status_code = status.HTTP_200_OK
+        return APIResponseBase.success_response(
+            data=CustomerLoginResponse(
+                access_token=access_token, refresh_token=refresh_token
+            ).model_dump(),
+            message="Google login successful",
+        )
+        
+    except ValueError:
+        # Invalid token
+        logger.error("Invalid Google token")
+        response.status_code = status.HTTP_401_UNAUTHORIZED
+        return APIResponseBase.unauthorized(message="Invalid Google token")
+    except Exception as e:
+        logger.error(f"Google login error: {str(e)}")
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return APIResponseBase.internal_server_error(
+            message=f"Google login error: {str(e)}"
+        )
