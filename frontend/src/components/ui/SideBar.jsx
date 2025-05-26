@@ -2,8 +2,6 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@r
 import PropTypes from 'prop-types';
 import { motion } from "framer-motion";
 import { useState } from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { getAllChatHistory } from '../../app/services/chatSlice';
 import { Link } from 'react-router-dom';
 import RenderChatList from './RenderChatList';
 
@@ -21,7 +19,9 @@ const SideBar = ({ isDialogOpen }) => {
                 <div className="flex flex-col h-full">
                     <div className="px-4 mb-6">
                         <Link to='/dashboard'>
-                            <img src="/images/Nexus_LOGO.png" alt="logo" width={120} height={120} className='mx-auto' />
+                            <div className="text-center">
+                                <span className="text-3xl font-bold bg-gradient-to-r from-[#0faab8] to-[#133044] bg-clip-text text-transparent">NEXUS</span>
+                            </div>
                         </Link>
                     </div>
                     <div className="px-4 mb-9 pt-5">

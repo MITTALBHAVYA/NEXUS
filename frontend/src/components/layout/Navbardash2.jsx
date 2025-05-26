@@ -1,106 +1,80 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Menu, X, Bell, Search } from 'lucide-react';
+import { Search, Bell } from 'lucide-react';
 import UserButton from "../ui/UserButton.jsx";
+import PropTypes from 'prop-types';
 
-const Navbardash = () => {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+const Navbardash2 = ({ title = "Dashboard" }) => {
     const [searchQuery, setSearchQuery] = useState('');
 
-    const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen);
-    };
-
     return (
-        <nav className="relative bg-white shadow-sm">
-            <div className="container mx-auto px-4 py-3">
+        <nav className="bg-white/90 backdrop-blur-sm border-b border-gray-100">
+            <div className="container mx-auto px-4 py-2">
                 <div className="flex items-center justify-between">
-                    {/* Mobile Menu Toggle */}
-                    <div className="md:hidden">
-                        <motion.button 
-                            onClick={toggleMenu}
-                            whileTap={{ scale: 0.9 }}
-                            className="text-gray-600 focus:outline-none"
+                    {/* Title and Search */}
+                    <div className="flex items-center space-x-4">
+                        <motion.h1 
+                            className="text-xl font-bold bg-gradient-to-r from-[#0faab8] to-[#133044] bg-clip-text text-transparent"
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3 }}
                         >
-                            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-                        </motion.button>
-                    </div>
-
-                    {/* Page Title / Search */}
-                    <div className="flex-grow md:flex-grow-0 md:w-1/2 flex items-center space-x-4">
-                        <div className="hidden md:block relative flex-grow">
-                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <Search size={20} className="text-gray-400" />
+                            {title}
+                        </motion.h1>
+                        
+                        <div className="hidden md:block relative">
+                            <div className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
+                                <Search className="text-gray-400 w-4 h-4" />
                             </div>
                             <input 
                                 type="text" 
                                 placeholder="Search..." 
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                                className="pl-8 pr-3 py-1 w-56 text-sm rounded-md border border-gray-200 focus:ring-1 focus:ring-[#0faab8] focus:border-transparent transition-all"
                             />
                         </div>
-                        <h1 className="text-xl md:text-2xl font-semibold text-gray-800 truncate">
-                            Dashboard
-                        </h1>
                     </div>
 
-                    {/* Right Side Actions */}
-                    <div className="flex items-center space-x-4">
-                        {/* Notifications */}
+                    {/* Right Side Items */}
+                    <div className="flex items-center space-x-3">
                         <motion.button
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
-                            className="relative hidden md:block"
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="relative hidden md:flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
                         >
-                            <Bell size={24} className="text-gray-600" />
-                            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                            <Bell className="text-gray-600 w-4 h-4" />
+                            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center text-[10px]">
                                 3
                             </span>
                         </motion.button>
-
-                        {/* User Button */}
+                        
                         <UserButton />
                     </div>
                 </div>
-
-                {/* Mobile Search */}
-                <div className="md:hidden mt-4">
+                
+                {/* Mobile Search - Shown only on mobile */}
+                <div className="mt-2 md:hidden">
                     <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <Search size={20} className="text-gray-400" />
+                        <div className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
+                            <Search className="text-gray-400 w-4 h-4" />
                         </div>
                         <input 
                             type="text" 
                             placeholder="Search..." 
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                            className="w-full pl-8 pr-3 py-1 text-sm rounded-md border border-gray-200 focus:ring-1 focus:ring-[#0faab8] focus:border-transparent transition-all"
                         />
                     </div>
                 </div>
-
-                {/* Mobile Menu */}
-                {isMenuOpen && (
-                    <motion.div 
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="md:hidden absolute left-0 right-0 top-full bg-white shadow-lg z-50"
-                    >
-                        <div className="px-4 pt-4 pb-6 space-y-4">
-                            <div className="flex items-center space-x-4">
-                                <Bell size={24} className="text-gray-600" />
-                                <span>Notifications (3)</span>
-                            </div>
-                            {/* Add more mobile menu items as needed */}
-                        </div>
-                    </motion.div>
-                )}
             </div>
         </nav>
     );
 };
 
-export default Navbardash;
+Navbardash2.propTypes = {
+    title: PropTypes.string,
+};
+
+export default Navbardash2;
