@@ -10,7 +10,7 @@ class CustomerQuery:
     """
 
     @staticmethod
-    def create_customer(db: Session, name: str, email: str, password: str):
+    def create_customer(db: Session, name: str, email: str, password: str, is_google_user: bool = False):
         """
         Creates a new customer in the database.
 
@@ -19,12 +19,13 @@ class CustomerQuery:
             name (str): The name of the customer.
             email (str): The email of the customer.
             password (str): The password of the customer.
+            is_google_user (bool, optional): Flag indicating if the user is authenticated via Google. Defaults to False.
 
         Returns:
             Customer: The created customer object.
         """
         hashed_password = get_hashed_password(password)
-        customer = Customer(name=name, email=email, password=hashed_password)
+        customer = Customer(name=name, email=email, password=hashed_password, is_google_user=is_google_user)
         db.add(customer)
         db.flush()
 

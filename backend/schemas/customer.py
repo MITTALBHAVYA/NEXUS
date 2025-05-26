@@ -68,3 +68,11 @@ class CustomerProfileUpdateRequest(BaseModel):
     """
 
     name: str
+
+
+class GoogleLoginRequest(BaseModel):
+    """
+    Represents the request model for Google authentication.
+    """
+
+    credential: str
