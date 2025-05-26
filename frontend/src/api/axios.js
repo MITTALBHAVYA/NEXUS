@@ -4,10 +4,10 @@ import {store} from '../app/store';
 import {logout} from '../app/services/authSlice';
 
 const api = axios.create({
-    baseURL:"http://localhost:8000/",
+    baseURL: import.meta.env.VITE_API_BASE_URL,
     headers:{
-        "Access-Control-Allow-Origin":"*",
         "Content-Type":"application/json",
+        "ngrok-skip-browser-warning": "true"
     }
 
 });

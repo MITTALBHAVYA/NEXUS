@@ -37,7 +37,7 @@ const DatasourcePage = () => {
             window.URL.revokeObjectURL(url);
         }
         catch (error) {
-            console.log("Error downloading file : ", error);
+            console.error("Error downloading file : ", error);
         } finally {
             setDownloadingDocId(null);
         }
@@ -48,7 +48,7 @@ const DatasourcePage = () => {
             setDeletingDocId(document_id);
             dispatch(deleteDataFile({ token, document_id, file_type }));
         } catch (error) {
-            console.log("Error deleting file : ", error);
+            console.error("Error deleting file : ", error);
         } finally {
             setDeletingDocId(null);
         }
@@ -59,7 +59,7 @@ const DatasourcePage = () => {
             setDeletingDocId(db_config_id);
             dispatch(deleteDBconfig({ token, db_config_id }));
         } catch (error) {
-            console.log("Error deleting DB config : ", error);
+            console.error("Error deleting DB config : ", error);
         } finally {
             setDeletingDocId(null);
         }

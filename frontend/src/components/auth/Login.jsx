@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { login, clearError } from "../../app/services/authSlice.js";
+import { login, clearError, googleLogin } from "../../app/services/authSlice.js";
 import {getUserInfo} from "../../app/services/userSlice.js"
 import { useNavigate } from "react-router-dom";
+import { GoogleLogin } from '@react-oauth/google';
 import Navbar from "../layout/Navbar.jsx";
 import { MdOutlineMailOutline } from "react-icons/md";
 import PageLayout from "../layout/PageLayout.jsx";
@@ -47,8 +48,22 @@ const Login = () => {
     }
   };
 
-  const loginWithGoogle = () => {
-    navigate("/auth/google");
+  const handleGoogleLoginSuccess = async (credentialResponse) => {
+    try {
+      const response = await dispatch(googleLogin(credentialResponse.credential)).unwrap();
+      if (response.access_token) {
+        const token = response.access_token;
+        dispatch(getUserInfo(token));
+        // dispatch(getAllChatHistory(token));
+        navigate("/dashboard");
+      }
+    } catch (err) {
+      console.error("Google login failed:", err);
+    }
+  };
+
+  const handleGoogleLoginError = () => {
+    console.error("Google Sign In was unsuccessful.");
   };
 
   return (
@@ -62,13 +77,17 @@ const Login = () => {
           <p className="text-[#FFB409] text-lg sm:text-xl font-medium mb-8">
             Sign in to unlock AI-driven insights and supercharge your workflow.
           </p>
-          <button
-            className="signin-ggl-btn flex items-center justify-center gap-3 py-3 px-6 text-white font-bold rounded-full bg-gradient-to-r from-[#0f172a] to-[#1e293b] shadow-md hover:shadow-lg hover:scale-105 transition-transform mb-4"
-            onClick={loginWithGoogle}
-          >
-            <img src="/images/google_icon.png" alt="Google Icon" className="h-6 w-6" />
-            <span>Sign in with Google</span>
-          </button>
+          <div className="flex justify-center mb-4">
+            <GoogleLogin
+              onSuccess={handleGoogleLoginSuccess}
+              onError={handleGoogleLoginError}
+              shape="pill"
+              theme="filled_blue"
+              text="signin_with"
+              useOneTap
+              width="300px"
+            />
+          </div>
           <span className="or text-white font-medium text-sm">OR</span>
           <form onSubmit={handleSubmit} className="mt-6">
             <div className="mb-4">
@@ -87,11 +106,11 @@ const Login = () => {
               <input
                 id="password"
                 name="password"
-                type="password"
                 required
                 placeholder="********"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                type="password"
                 className="w-full px-4 py-3 text-gray-800 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#FFB409]"
               />
             </div>

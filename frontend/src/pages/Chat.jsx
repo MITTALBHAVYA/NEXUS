@@ -51,8 +51,6 @@ const Chat = () => {
   hljs.registerLanguage("javascript", javascript);
   hljs.registerLanguage("markdown", markdown);
 
-  console.log("page loding chats here : ", chats);
-
   const toggleUploadDialog = () => {
     setShowUploadDialog(!showUploadDialog);
   };
@@ -87,9 +85,7 @@ const Chat = () => {
 
     try {
       const chat = await dispatch(getChart({ token, chart_uuid })).unwrap();
-      console.log("here the data i am getting from the chart getching ", chat);
       if (chat) {
-        console.log("need the breakdown : 1.caption ", chat.caption, "2.data ", chat.data, "3.chart_type ", chat.chart_type);
         const formattedChat =
         {
           role: "assistant",
@@ -99,14 +95,12 @@ const Chat = () => {
           chartUuid: chat.chart_uuid || "",
           chartType: chat.chart_type || "",
         };
-        console.log("formattedChats : ", formattedChat);
         setChats((prevChats) => [...prevChats, formattedChat]);
         setChatType(chatType);
       }
     } catch (error) {
       console.error("Error fetching chart data:", error.message || error);
     } finally {
-      console.log("finally chats is : ", chats);
       setIsLoading(false);
     }
   };
@@ -168,11 +162,9 @@ const Chat = () => {
           queryResult = await dispatch(postQueryv1({ token, query_type, requiredData })).unwrap();
           break;
       }
-      console.log("queryResult is (suggestClick) : ", queryResult);
       const chart_uuid = queryResult?.response?.chart_uuid;
 
       if (chart_uuid) {
-        console.log("chart uuid :", chart_uuid);
         await getChartData(chart_uuid);
       } else {
         setChats((prevChats) => [
@@ -205,9 +197,7 @@ const Chat = () => {
     try {
       fetchSuggestions();
       const data = await dispatch(getChatHistory({ token, chat_uuid: params.chat_uuid })).unwrap();
-      console.log("the fetched chats(from history ) are : ",data);
       if (data?.history?.messages) {
-        console.log("here is the data from fetch chats : ", data.history.messages);
         const formattedChats = data.history.messages.map((chat) => {
           let chartData = [];
 
@@ -243,15 +233,12 @@ const Chat = () => {
 
 
   const handleSend = async () => {
-    console.log("handleSend called");
     const queryInput = input;
-    console.log("using input from the state in content ,", input);
     if (!queryInput.trim()) return;
     setChats((prevChats) => [...prevChats, { role: "user", content: input }]);
     setInput("");
     setIsLoading(true);
     const response = await dispatch(postQuery({ token, requiredData: { query: queryInput, chat_uuid: params.chat_uuid } })).unwrap();
-    console.log("here i am getting the response from the dispatch(handleSend) going to use in content", response);
     setIsLoading(false);
     setChats((prevChats) => [
       ...prevChats,
@@ -262,9 +249,7 @@ const Chat = () => {
   };
 
   const handleSendCSV = async () => {
-    console.log("handleSendCSV called");
     const queryInput = input;
-    console.log("using input from the state in content ,", input);
     if (!queryInput.trim()) return;
     setChats((prevChats) => [...prevChats, { role: "user", content: input }]);
     setInput("");
@@ -281,9 +266,7 @@ const Chat = () => {
 
     try {
       const response = await dispatch(postQueryv2({ token, requiredData })).unwrap();
-      console.log("here i am getting the response from the dispatchQ2(HandleSsendcsv2) going to use in content", response);
       const chartCheck = checkChart(response.response);
-      console.log("here i am getting the response from the dispatch chartcheck going to use in", chartCheck);
       if (chartCheck.isTrue) {
         await getChartData(chartCheck.chart_uuid);
       } else {
@@ -304,9 +287,7 @@ const Chat = () => {
   };
 
   const handleSendExcel = async () => {
-    console.log("handleSendExcel called");
     const queryInput = input;
-    console.log("using input from the state in content ,", input);
     if (!queryInput.trim()) return;
     setChats((prevChats) => [...prevChats, { role: "user", content: queryInput }]);
     setInput("");
@@ -323,9 +304,7 @@ const Chat = () => {
 
     try {
       const result = await dispatch(postQueryv1({ token, query_type: "excel", requiredData })).unwrap();
-      console.log("here i am getting the response from the dispatchQ1(HandleEXCEL) going to use in content", result);
       const chartCheck = checkChart(result.response);
-      console.log("here i am getting the response from the dispatch chartcheck going to use in", chartCheck);
       if (chartCheck.isTrue) {
         await getChartData(chartCheck.chart_uuid);
       } else {
@@ -348,9 +327,7 @@ const Chat = () => {
 
 
   const handleSendDB = async () => {
-    console.log("handleSendDB called");
     const queryInput = input;
-    console.log("using input from the state in content ,", input);
     if (!queryInput.trim()) return;
     setChats((prevChats) => [...prevChats, { role: "user", content: queryInput }]);
     setInput("");
@@ -367,9 +344,7 @@ const Chat = () => {
 
     try {
       const response = await dispatch(postQueryv1({ token, query_type: "db", requiredData })).unwrap();
-      console.log("here i am getting the response from the dispatchQ1(HandleSendDB) going to use in content", response);
       const chartCheck = await checkChart(response.response).unwrap();
-      console.log("here i am getting the response from the dispatch chartcheck going to use in", chartCheck);
       if (chartCheck.isTrue) {
         await getChartData(chartCheck.chart_uuid);
       } else {
